@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>İlaç Stok Yönetimi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #34495e;
+            padding: 15px;
+            text-align: center;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .container {
+            width: 850px;
+            margin: 20px auto;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,.1);
+        }
+        input, button {
+            padding: 7px;
+            width: 90%;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 94%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html">Ana Sayfa</a>
+    <a href="hasta.html">Hasta Yönetimi</a>
+    <a href="ilacstok.html">İlaç Stok Yönetimi</a>
+    <a href="recete.html">Reçete Yönetimi</a>
+    <a href="kasa.html">Kasa Yönetimi</a>
+    <a href="personel.html">Personel Yönetimi</a>
+    <a href="tedarik.html">Tedarikçiler</a>
+</nav>
+
+<div class="container">
+    <h3>Yeni İlaç Stok Ekle</h3>
+    <input type="text" id="ilac_adi" placeholder="İlaç Adı">
+    <input type="number" id="stok_miktari" placeholder="Stok Miktarı">
+    <input type="date" id="son_kullanma_tarihi">
+    <input type="number" step="0.01" id="fiyat" placeholder="Fiyat (₺)">
+    <button id="ilacEkle">İlaç Ekle</button>
+
+    <h3>İlaç Ara</h3>
+    <input type="text" id="arama" placeholder="İlaç adına göre ara...">
+
+    <button id="listele">Tüm İlaçları Göster</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>İlaç Adı</th>
+                <th>Stok Miktarı</th>
+                <th>Son Kullanma Tarihi</th>
+                <th>Fiyat (₺)</th>
+            </tr>
+        </thead>
+        <tbody id="ilaclar">
+            <!-- İlaç kayıtları buraya AJAX ile yüklenecek -->
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function ilacListele(filtre = '') {
+        $.post("ilacstok.php", {islem:"listele", arama: filtre}, function(data){
+            let satir = '';
+            data = JSON.parse(data);
+            data.forEach(function(ilac){
+                satir += `<tr>
+                    <td>${ilac.idstok}</td>
+                    <td>${ilac.ilac_adi}</td>
+                    <td>${ilac.stok_miktari}</td>
+                    <td>${ilac.son_kullanma_tarihi}</td>
+                    <td>${ilac.fiyat}</td>
+                </tr>`;
+            });
+            $("#ilaclar").html(satir);
+        });
+    }
+
+    ilacListele(); // sayfa yüklenince listeleme yapar
+
+    $("#listele").click(function(){
+        $("#arama").val('');
+        ilacListele();
+    });
+
+    $("#ilacEkle").click(function(){
+        $.post("ilacstok.php", {
+            islem: "ekle",
+            ilac_adi: $("#ilac_adi").val(),
+            stok_miktari: $("#stok_miktari").val(),
+            son_kullanma_tarihi: $("#son_kullanma_tarihi").val(),
+            fiyat: $("#fiyat").val()
+        }, function(response){
+            alert(response);
+            $("#ilac_adi, #stok_miktari, #son_kullanma_tarihi, #fiyat").val('');
+            ilacListele();
+        });
+    });
+
+    $("#arama").keyup(function(){
+        let arama = $(this).val();
+        ilacListele(arama);
+    });
+</script>
+
+</body>
+</html>

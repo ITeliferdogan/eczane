@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Hasta Yönetimi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background: #34495e;
+            padding: 15px;
+            text-align: center;
+        }
+        nav a {
+            color: #fff;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            width: 850px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,.1);
+        }
+        input, button {
+            padding: 7px;
+            width: 90%;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 94%;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+        }
+        th {
+            background: #3498db;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html">Ana Sayfa</a>
+    <a href="hasta.html">Hasta Yönetimi</a>
+    <a href="ilacstok.html">İlaç Stok Yönetimi</a>
+    <a href="recete.html">Reçete Yönetimi</a>
+    <a href="kasa.html">Kasa Yönetimi</a>
+    <a href="personel.html">Personel Yönetimi</a>
+    <a href="tedarik.html">Tedarikçiler</a>
+</nav>
+
+<div class="container">
+    <h3>Yeni Hasta Ekle</h3>
+    <input type="text" id="ad" placeholder="Ad">
+    <input type="text" id="soyad" placeholder="Soyad">
+    <input type="text" id="telefon" placeholder="Telefon">
+    <input type="text" id="hastatc" placeholder="TC Kimlik">
+    <button id="hastaEkle">Hasta Ekle</button>
+
+    <h3>Hasta Ara</h3>
+    <input type="text" id="arama" placeholder="İsim veya TC ile ara...">
+
+    <button id="listele">Tüm Hastaları Göster</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>Telefon</th>
+                <th>TC Kimlik</th>
+            </tr>
+        </thead>
+        <tbody id="hastalar">
+            <!-- Hasta kayıtları buraya gelecek -->
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Hasta listeleme fonksiyonu
+    function hastaListele(filtre = '') {
+        $.post("hasta.php", {islem:"listele", arama: filtre}, function(data){
+            let satir = '';
+            data = JSON.parse(data);
+            data.forEach(function(h){
+                satir += `<tr>
+                            <td>${h.idhasta}</td>
+                            <td>${h.ad}</td>
+                            <td>${h.soyad}</td>
+                            <td>${h.telefon}</td>
+                            <td>${h.hastatc}</td>
+                          </tr>`;
+            });
+            $("#hastalar").html(satir);
+        });
+    }
+
+    // İlk sayfa yüklemesinde tüm hastaları getir
+    hastaListele();
+
+    // Tüm hastaları göster butonu
+    $("#listele").click(function(){
+        $("#arama").val('');
+        hastaListele();
+    });
+
+    // Hasta ekleme işlemi
+    $("#hastaEkle").click(function(){
+        $.post("hasta.php", {
+            islem: "ekle",
+            ad: $("#ad").val(),
+            soyad: $("#soyad").val(),
+            telefon: $("#telefon").val(),
+            hastatc: $("#hastatc").val()
+        }, function(response){
+            alert(response);
+            $("#ad, #soyad, #telefon, #hastatc").val('');
+            hastaListele();
+        });
+    });
+
+    // Arama kutusuna her yazışta filtreleme yap
+    $("#arama").keyup(function(){
+        let arama = $(this).val();
+        hastaListele(arama);
+    });
+</script>
+
+</body>
+</html>

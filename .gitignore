@@ -1,0 +1,62 @@
+# İşletim Sistemi ve Genel Dosyalar
+# ---------------------------
+# Windows küçük resim önbelleği
+Thumbs.db
+# macOS sistem dosyası
+.DS_Store
+
+# VS Code Ayarları
+# ---------------------------
+# Lokal çalışma alanı ayarları
+.vscode/
+
+# PHP, XAMPP ve Composer
+# ---------------------------
+# Composer'ın indirdiği kütüphaneler (çok önemli)
+/vendor/
+
+# Eğer Composer'ı lokal olarak indirdiyseniz
+composer.phar
+
+# ÇOK ÖNEMLİ: Şifreleri ve gizli bilgileri içeren dosyalar
+# ASLA GITHUB'A YÜKLENMEMELİ!
+# Kendi dosya adların neyse onları ekle (örn: db_connect.php, config.php)
+.env
+config.php
+db.php
+database.php
+
+# PHP hata logları
+error_log
+php_errors.log
+
+# Java Projeleri İçin
+# ---------------------------
+# Derlenmiş Java bytecode dosyaları
+*.class
+
+# Paket dosyaları (JAR, WAR, EAR)
+*.jar
+*.war
+*.ear
+
+# Log dosyaları
+*.log
+
+# Build araçları çıktı klasörleri
+# Maven
+/target/
+# Gradle
+/build/
+
+# IDE Ayar Dosyaları (Java için yaygın)
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.settings/
+.classpath
+.project

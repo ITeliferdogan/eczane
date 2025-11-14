@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Reçete Yönetimi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f6f9;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #34495e;
+            padding: 15px;
+            text-align: center;
+        }
+        nav a {
+            color: #fff;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            width: 850px;
+            margin: 20px auto;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,.1);
+        }
+        input, button, select {
+            padding: 7px;
+            width: 90%;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 94%;
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #d35400;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #e67e22;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html">Ana Sayfa</a>
+    <a href="hasta.html">Hasta Yönetimi</a>
+    <a href="ilacstok.html">İlaç Stok Yönetimi</a>
+    <a href="recete.html">Reçete Yönetimi</a>
+    <a href="kasa.html">Kasa Yönetimi</a>
+    <a href="personel.html">Personel Yönetimi</a>
+    <a href="tedarik.html">Tedarikçiler</a>
+</nav>
+
+<div class="container">
+    <h3>Yeni Reçete Ekle</h3>
+    <select id="hastaSec">
+        <option value="">Hasta Seçiniz</option>
+    </select>
+    <input type="date" id="recete_tarihi">
+    <button id="receteEkle">Reçete Oluştur</button>
+
+    <h3>Reçete Ara (Hasta Adı)</h3>
+    <input type="text" id="arama" placeholder="Hasta adına göre ara...">
+    <button id="listele">Tüm Reçeteleri Göster</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Reçete ID</th>
+                <th>Hasta Adı Soyadı</th>
+                <th>Reçete Tarihi</th>
+            </tr>
+        </thead>
+        <tbody id="receteler">
+            <!-- reçete listesi buraya AJAX ile gelecek -->
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function hastaGetir(){
+        $.post("recete.php", {islem:"hastalari_getir"}, function(data){
+            let secenekler='<option value="">Hasta Seçiniz</option>';
+            data=JSON.parse(data);
+            data.forEach(h=>{
+                secenekler+=`<option value="${h.idhasta}">${h.ad} ${h.soyad}</option>`;
+            });
+            $("#hastaSec").html(secenekler);
+        });
+    }
+
+    function receteListele(filtre = ''){
+        $.post("recete.php", {islem:"listele", arama:filtre}, function(data){
+            let satir='';
+            data=JSON.parse(data);
+            data.forEach(r=>{
+                satir+=`<tr>
+                <td>${r.idrecete}</td>
+                <td>${r.ad} ${r.soyad}</td>
+                <td>${r.recete_tarihi}</td>
+                </tr>`;
+            });
+            $("#receteler").html(satir);
+        });
+    }
+
+    $("#receteEkle").click(function(){
+        $.post("recete.php",{
+            islem:"ekle",
+            idhasta:$("#hastaSec").val(),
+            recete_tarihi:$("#recete_tarihi").val()
+        },function(response){
+            alert(response);
+            $("#hastaSec, #recete_tarihi").val('');
+            receteListele();
+        });
+    });
+
+    $("#arama").keyup(function(){
+        receteListele($(this).val());
+    });
+
+    $("#listele").click(function(){
+        $("#arama").val('');
+        receteListele();
+    });
+
+    $(document).ready(function(){
+        hastaGetir();
+        receteListele();
+    });
+</script>
+
+</body>
+</html>

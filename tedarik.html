@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tedarikçi Yönetimi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0; padding: 0;
+        }
+        nav {
+            background-color: #34495e;
+            padding: 15px; text-align: center;
+        }
+        nav a {
+            color: #fff; margin: 0 15px; text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            width: 850px; margin: 20px auto;
+            padding: 15px; background: #fff;
+            border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.1);
+        }
+        input, button {
+            padding: 7px; width: 90%; margin-bottom: 8px; box-sizing: border-box;
+        }
+        button {
+            width: 94%; background-color: #16a085; color: white;
+            border: none; cursor: pointer; border-radius: 4px;
+        }
+        button:hover {
+            background-color: #138d75;
+        }
+        table {
+            width: 100%; border-collapse: collapse; margin-top: 15px;
+        }
+        th, td {
+            padding: 8px; border-bottom: 1px solid #ddd; text-align: center;
+        }
+        th {
+            background-color: #16a085; color: white;
+        }
+        .sil-btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .sil-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html">Ana Sayfa</a>
+    <a href="hasta.html">Hasta Yönetimi</a>
+    <a href="ilacstok.html">İlaç Stok Yönetimi</a>
+    <a href="recete.html">Reçete Yönetimi</a>
+    <a href="kasa.html">Kasa Yönetimi</a>
+    <a href="personel.html">Personel Yönetimi</a>
+    <a href="tedarik.html">Tedarikçiler</a>
+</nav>
+
+<div class="container">
+
+    <h3>Yeni Tedarikçi Ekle</h3>
+    <input type="text" id="ad" placeholder="Yetkili Adı">
+    <input type="text" id="firma_adi" placeholder="Firma Adı">
+    <input type="text" id="telefon" placeholder="Telefon">
+    <button id="tedarikciEkle">Tedarikçi Ekle</button>
+
+    <h3>Tedarikçi Ara</h3>
+    <input type="text" id="arama" placeholder="Yetkili adı veya firma adı ile ara...">
+    <button id="listele">Tüm Tedarikçileri Göster</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Yetkili Adı</th>
+                <th>Firma Adı</th>
+                <th>Telefon</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+        <tbody id="tedarikciler"></tbody>
+    </table>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function tedarikciListele(filtre=''){
+    $.post("tedarik.php", {islem:"listele", arama:filtre}, function(data){
+        let satir='';
+        data=JSON.parse(data);
+        data.forEach(t=>{
+            satir+=`<tr>
+                <td>${t.idtedarik}</td>
+                <td>${t.ad}</td>
+                <td>${t.firma_adi}</td>
+                <td>${t.telefon}</td>
+                <td>
+                    <button class="sil-btn" onclick="silTedarikci(${t.idtedarik})">Sil</button>
+                </td>
+            </tr>`;
+        });
+        $("#tedarikciler").html(satir);
+    });
+}
+
+function silTedarikci(id){
+    if(confirm("Bu tedarikçiyi silmek istediğinize emin misiniz?")){
+        $.post("tedarik.php", {islem:"sil", id:id}, function(response){
+            alert(response);
+            tedarikciListele();
+        });
+    }
+}
+
+$("#tedarikciEkle").click(function(){
+    $.post("tedarik.php",{
+        islem:"ekle",
+        ad:$("#ad").val(),
+        firma_adi:$("#firma_adi").val(),
+        telefon:$("#telefon").val()
+    },function(response){
+        alert(response);
+        $("#ad, #firma_adi, #telefon").val('');
+        tedarikciListele();
+    });
+});
+
+$("#arama").keyup(function(){
+    tedarikciListele($(this).val());
+});
+
+$("#listele").click(function(){
+    $("#arama").val('');
+    tedarikciListele();
+});
+
+$(document).ready(function(){
+    tedarikciListele();
+});
+</script>
+
+</body>
+</html>

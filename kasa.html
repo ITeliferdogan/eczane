@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Kasa Yönetimi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0; padding: 0;
+        }
+        nav {
+            background-color: #34495e;
+            padding: 15px; text-align: center;
+        }
+        nav a {
+            color: #fff; margin: 0 15px; text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            width: 850px; margin: 20px auto;
+            padding: 15px; background: #fff;
+            border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.1);
+        }
+        input, button {
+            padding: 7px; width: 90%; margin-bottom: 8px; box-sizing: border-box;
+        }
+        button {
+            width: 94%; background-color: #8e44ad; color: white;
+            border: none; cursor: pointer; border-radius: 4px;
+        }
+        button:hover {
+            background-color: #732d91;
+        }
+        table {
+            width: 100%; border-collapse: collapse; margin-top: 15px;
+        }
+        th, td {
+            padding: 8px; border-bottom: 1px solid #ddd; text-align: center;
+        }
+        th {
+            background-color: #8e44ad; color: white;
+        }
+        .bakiye {
+            font-size:18px; color:#27ae60; margin-top:15px;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html">Ana Sayfa</a>
+    <a href="hasta.html">Hasta Yönetimi</a>
+    <a href="ilacstok.html">İlaç Stok Yönetimi</a>
+    <a href="recete.html">Reçete Yönetimi</a>
+    <a href="kasa.html">Kasa Yönetimi</a>
+    <a href="personel.html">Personel Yönetimi</a>
+    <a href="tedarik.html">Tedarikçiler</a>
+</nav>
+
+<div class="container">
+
+    <h3>Kasa Hareketlerini Listele</h3>
+    <label>Başlangıç Tarihi</label>
+    <input type="date" id="tarih1">
+    <label>Bitiş Tarihi</label>
+    <input type="date" id="tarih2">
+    <button id="listele">Listele</button>
+
+    <div class="bakiye">Toplam Kasa Bakiyesi: <span id="bakiye">0.00 ₺</span></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>İşlem ID</th>
+                <th>Reçete ID</th>
+                <th>Tarih</th>
+                <th>Tutar (₺)</th>
+            </tr>
+        </thead>
+        <tbody id="kasalar"></tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function kasaListele(){
+    $.post("kasa.php", {
+        islem: "listele",
+        tarih1: $("#tarih1").val(),
+        tarih2: $("#tarih2").val()
+    }, function(data){
+        let satir='', toplam=0;
+        data=JSON.parse(data);
+        data.forEach(k=>{
+            toplam += parseFloat(k.toplam_bakiye);
+            satir+=`<tr>
+                <td>${k.idkasa}</td>
+                <td>${k.recete_id}</td>
+                <td>${k.siptarih}</td>
+                <td>${k.toplam_bakiye} ₺</td>
+            </tr>`;
+        });
+        $("#kasalar").html(satir);
+        $("#bakiye").text(toplam.toFixed(2)+' ₺');
+    });
+}
+
+$("#listele").click(function(){
+    kasaListele();
+});
+
+$(document).ready(function(){
+    kasaListele();
+});
+</script>
+
+</body>
+</html>
