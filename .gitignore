@@ -59,4 +59,4 @@ php_errors.log
 # Eclipse
 .settings/
 .classpath
-.project
+.projectDump20250327.sql

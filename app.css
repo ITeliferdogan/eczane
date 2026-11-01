@@ -1,0 +1,426 @@
+:root {
+    color-scheme: light;
+    --ink: #172b4d;
+    --muted: #718096;
+    --line: #e7edf3;
+    --surface: #ffffff;
+    --page: #f4f7fb;
+    --primary: #087f8c;
+    --primary-dark: #066873;
+    --teal-soft: #e7f5f4;
+    --shadow: 0 12px 32px rgba(27, 55, 87, .07);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    color: var(--ink);
+    background:
+        radial-gradient(ellipse at 92% 2%, rgba(8, 127, 140, .08), transparent 28rem),
+        var(--page);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    line-height: 1.5;
+}
+
+nav {
+    position: sticky;
+    z-index: 5;
+    top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    min-height: 76px;
+    padding: 12px max(24px, calc((100% - 1200px) / 2));
+    background: rgba(255, 255, 255, .94);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 4px 18px rgba(27, 55, 87, .04);
+    backdrop-filter: blur(14px);
+}
+
+nav::before {
+    content: "ECZANE";
+    flex: 0 0 auto;
+    margin-right: auto;
+    color: var(--primary);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: .13em;
+}
+
+nav a {
+    padding: 9px 12px;
+    color: #53647a;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 650;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color .18s ease, background .18s ease, transform .18s ease;
+}
+
+nav a:hover,
+nav a[aria-current="page"] {
+    color: var(--primary-dark);
+    background: var(--teal-soft);
+}
+
+nav a:hover {
+    transform: translateY(-1px);
+}
+
+.container,
+.content {
+    width: min(1200px, calc(100% - 48px));
+    margin: 38px auto;
+    padding: 30px;
+    background: var(--surface);
+    border: 1px solid rgba(222, 231, 240, .9);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+}
+
+.container h3 {
+    margin: 0 0 18px;
+    color: var(--ink);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+}
+
+.container h3:not(:first-child) {
+    margin-top: 32px;
+    padding-top: 25px;
+    border-top: 1px solid var(--line);
+}
+
+.container input,
+.container select {
+    width: calc(50% - 16px);
+    min-height: 46px;
+    margin: 0 12px 12px 0;
+    padding: 11px 14px;
+    color: var(--ink);
+    background: #fbfcfe;
+    border: 1px solid #dce5ee;
+    border-radius: 10px;
+    outline: none;
+    font: inherit;
+    font-size: 14px;
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.container input::placeholder {
+    color: #9aa8b8;
+}
+
+.container input:focus,
+.container select:focus {
+    background: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(8, 127, 140, .12);
+}
+
+.container button,
+.content a {
+    display: table;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    width: auto;
+    margin: 0 8px 8px 0;
+    padding: 10px 18px;
+    color: #fff;
+    background: var(--primary);
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 5px 12px rgba(8, 127, 140, .16);
+    cursor: pointer;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 650;
+    text-decoration: none;
+    transition: background .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+
+.container button:hover,
+.content a:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 8px 18px rgba(8, 127, 140, .2);
+    transform: translateY(-1px);
+}
+
+.container button:focus-visible,
+.content a:focus-visible,
+nav a:focus-visible {
+    outline: 3px solid rgba(8, 127, 140, .3);
+    outline-offset: 2px;
+}
+
+.container #arama {
+    width: min(480px, calc(100% - 210px));
+}
+
+.container table {
+    display: block;
+    width: 100%;
+    margin-top: 18px;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    border-spacing: 0;
+    border-collapse: separate;
+    white-space: nowrap;
+}
+
+.container thead {
+    background: #f5f8fb;
+}
+
+.container th,
+.container td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    font-size: 13px;
+}
+
+.container th {
+    color: #5c6e83;
+    background: transparent;
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+}
+
+.container tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.container tbody tr:hover {
+    background: #f8fbfc;
+}
+
+.container .sil-btn {
+    min-height: 34px;
+    margin: 0;
+    padding: 6px 12px;
+    background: #fff1f0;
+    color: #c43b39;
+    box-shadow: none;
+}
+
+.container .sil-btn:hover {
+    background: #ffe2df;
+}
+
+.bakiye {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0;
+    padding: 12px 16px;
+    color: #126a52;
+    background: #e9f7f1;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.content {
+    max-width: 1000px;
+    padding: 54px;
+    text-align: left;
+}
+
+.content h1 {
+    max-width: 650px;
+    margin: 0 0 12px;
+    font-size: clamp(32px, 5vw, 48px);
+    line-height: 1.1;
+    letter-spacing: -.04em;
+}
+
+.content p {
+    margin: 0 0 28px;
+    color: var(--muted);
+}
+
+.dashboard-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    margin-top: 34px;
+}
+
+.content .dashboard-links a {
+    display: flex;
+    justify-content: flex-start;
+    min-height: 82px;
+    margin: 0;
+    padding: 18px;
+    color: var(--ink);
+    background: #f8fafc;
+    border: 1px solid var(--line);
+    box-shadow: none;
+}
+
+.content .dashboard-links a:hover {
+    color: var(--primary-dark);
+    background: var(--teal-soft);
+    border-color: #c8e8e4;
+}
+
+.login-page {
+    display: grid;
+    min-height: 100vh;
+    place-items: center;
+    padding: 24px;
+}
+
+.login-box {
+    width: min(430px, 100%);
+    padding: 42px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: 0 24px 70px rgba(27, 55, 87, .14);
+}
+
+.login-box::before {
+    content: "ECZANE YÖNETİM";
+    display: block;
+    margin-bottom: 26px;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-align: center;
+}
+
+.login-box h2 {
+    margin: 0 0 24px;
+    color: var(--ink);
+    font-size: 28px;
+    letter-spacing: -.03em;
+}
+
+.login-box label {
+    display: block;
+    margin-bottom: 7px;
+    color: #42546a;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    width: 100%;
+    min-height: 48px;
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    color: var(--ink);
+    background: #fbfcfe;
+    border: 1px solid #dce5ee;
+    border-radius: 10px;
+    font: inherit;
+}
+
+.login-box input:focus {
+    border-color: var(--primary);
+    outline: 3px solid rgba(8, 127, 140, .12);
+}
+
+.login-box button {
+    width: 100%;
+    min-height: 48px;
+    color: #fff;
+    background: var(--primary);
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+
+.login-box button:hover {
+    background: var(--primary-dark);
+}
+
+.login-box .error:empty {
+    display: none;
+}
+
+.login-box .error:not(:empty) {
+    color: #ae3432;
+    font-size: 13px;
+}
+
+@media (max-width: 900px) {
+    nav {
+        position: static;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 14px 18px;
+    }
+
+    nav::before {
+        flex-basis: 100%;
+        margin: 0 0 4px;
+        text-align: center;
+    }
+
+    nav a {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .container,
+    .content {
+        width: calc(100% - 28px);
+        margin: 18px auto;
+        padding: 20px 16px;
+        border-radius: 14px;
+    }
+
+    .container input,
+    .container select,
+    .container #arama {
+        display: block;
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .container button {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .container th,
+    .container td {
+        padding: 12px;
+    }
+
+    .content h1 {
+        font-size: 34px;
+    }
+
+    .login-box {
+        padding: 30px 22px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}

@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["giris"])) {
-    header("Location: login.php"); // Giriş yapılmamışsa login'e yönlendir
+    header("Location: login.html");
     exit();
 }
 ?>
@@ -17,9 +17,11 @@ if (!isset($_SESSION["giris"])) {
         nav a {color:#fff;margin:0 15px;text-decoration:none;font-weight:bold;}
         .content {text-align:center;margin-top:50px;}
     </style>
+    <link rel="stylesheet" href="app.css?v=2">
 </head>
 <body>
 <nav>
+    <a href="index.php">Ana Sayfa</a>
     <a href="hasta.html">Hasta Yönetimi</a>
     <a href="ilacstok.html">İlaç Stok Yönetimi</a>
     <a href="recete.html">Reçete Yönetimi</a>
@@ -28,9 +30,18 @@ if (!isset($_SESSION["giris"])) {
     <a href="tedarik.html">Tedarikçiler</a>
     <a href="logout.php" style="color:red;">Çıkış Yap</a>
 </nav>
+<script src="app.js"></script>
 <div class="content">
-    <h1>Eczane Yönetim Sistemine Hoşgeldinizzz</h1>
-    <p>Yukarıdaki menüden işlem seçebilirsiniz.</p>
+    <h1>Eczane yönetiminiz, tek bir yerde.</h1>
+    <p>Günlük işlemlerinize hızlıca ulaşın ve eczanenizi kolayca yönetin.</p>
+    <div class="dashboard-links">
+        <a href="hasta.html">Hasta Yönetimi</a>
+        <a href="ilacstok.html">İlaç Stok Yönetimi</a>
+        <a href="recete.html">Reçete Yönetimi</a>
+        <a href="kasa.html">Kasa Yönetimi</a>
+        <a href="personel.html">Personel Yönetimi</a>
+        <a href="tedarik.html">Tedarikçi Yönetimi</a>
+    </div>
 </div>
 </body>
 </html>
